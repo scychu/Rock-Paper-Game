@@ -1,0 +1,104 @@
+<!-- Start the Javascript -->
+<script>
+    let userScore = 0;
+    let computerScore = 0;
+    let drawScore = 0;
+    let rounds = 0;
+
+function startRound(){
+     userScore = 0;
+     computerScore = 0;
+     drawScore = 0;
+     rounds = 0;
+}
+    // function for random computer Choice//
+     function computerPlay(){
+         const choices = ['rock','paper','scissors'];
+         const randomNumber = Math.floor(Math.random()*3);
+         return choices[randomNumber];
+    }
+    
+    function playRound(playerSelection,computerSelection){
+        // function to fill in the user choice.
+        function usersChoice (){
+         return (prompt(`Rock, Paper or Scissors.`,)).toLowerCase();
+     } 
+        // function if the user didn't fill in the choice.
+        function invalidOption (){
+         return (prompt(`Invalid input. Choose between "Rock", "Paper" or "Scissors"`,)).toLowerCase();
+     } 
+        var playerSelection = usersChoice();
+        var theOptions= /rock|paper|scissors/i;
+        // while will keep looping if the the usersChoice is blank.
+        while(playerSelection==""|null|theOptions){
+            playerSelection = invalidOption();
+        }
+        var computerSelection = computerPlay();
+        // a switch for declaring the winner or the loser each round and add winner's score.
+        switch (playerSelection+computerSelection){
+            case "rockscissors":
+            case "paperrock":
+            case "scissorspaper":
+            let win = `Opponent choose ${computerSelection}.You win!`;
+            userScore++;
+            console.log(win);
+            console.log(`Your score :${userScore}`);
+            console.log(`Opponent score :${computerScore}`);
+            return win;
+            break;
+            case "rockpaper":
+            case "paperscissors":
+            case "scissorsrock":
+            let lose = `You Lose! Opponent choose ${computerSelection}.`;
+            computerScore++;
+            console.log(lose);
+            console.log(`Your score :${userScore}`);
+            console.log(`Opponent score :${computerScore}`);
+            return lose;
+            break;
+            case "rockrock":
+            case "paperpaper":
+            case "scissorsscissors":
+            let draw = ` Draw. You both choose the same option.`;
+            drawScore++;
+            console.log(draw);
+            console.log(`Your score :${userScore}`);
+            console.log(`Opponent score :${computerScore}`);
+            console.log(`Draw :${drawScore}`);
+            return draw;
+            break;
+        } // end of switch 
+    } // end of playRound function
+
+var again;
+// function for another round 
+function anotherRound(){
+            if(userScore>computerScore+drawScore){
+                console.log(`Congratulation!!! You won the match with a score of ${userScore}.`)
+            again =confirm(`Congratulation!!! You won the match with a score of ${userScore}. Wanna play again?`);
+        } else if (userScore<computerScore){
+                console.log(`Boo! Opponent won the match with a score of ${computerScore}.`)
+            again =confirm(`Boo! Opponent won the match with a score of ${computerScore}. Try your luck again?`);
+        } else if (usersChoice=computerScore){
+                console.log(`It's a tie. Both scored ${userScore}.`)
+            again =confirm(`It's a tie. Both scored ${userScore}. It's time to determine who is the winner. Play again?`);
+                    
+    }
+}
+
+// function for the game to play.
+function game (){
+    // for loop played for 5 times
+    for (var rounds=0;rounds<5;rounds++){
+        playRound();
+    }
+    // and if the the player choose OK = play again. Then another 5 rounds will be played. 
+    anotherRound();
+        if (again == true){
+            startRound();// clear the current score before starting another 5 rounds
+            game();
+     } else alert ("Thanks for playing");
+    }
+game();//PLAY THE GAME
+
+    </script>
