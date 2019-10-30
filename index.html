@@ -1,104 +1,189 @@
+<html>
+<div class="score-board">
+    <div id="user_label" class="label">User
+    <div id="user_score" class="badge">0</div></div>
+    <div id="comp_label" class="label">Comp
+    <div id="comp_score" class="badge">0</div></div>
+</div>
+    <button id="r">Rock</button>
+    <button id="p">Paper</button>
+    <button id="s">Scissors</button>
+<div id="result"></div>
+<div id="winner"></div>
+<div id="test"></div>
+<button id="restart">PLAY AGAIN</button>
+</html>
+<style>
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+.score-board{
+    margin:auto;
+    width:500px;
+    padding:20px auto;
+}
+.label{
+    display: inline-block;
+    justify-content: center;
+    border: 3px solid black;
+    margin:30px auto;
+    width:100px;
+    text-align: center;
+    padding:15px 20px 30px 20px;
+    font-size: 20px;
+
+}
+#user_label{
+    position: relative;
+}
+#comp_label{
+    position: relative;
+}
+.badge{
+    display: inline-block;
+    position: absolute;
+    font-size: 20px;
+    position:absolute;
+    top:40px;
+    left:40px;
+    
+}
+button{
+    text-align:center;
+    border:none;
+    background: #404040;
+    color:#ffffff;
+    font-weight: 100;
+    padding:20px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease 0s;
+    margin:50px;
+}
+button:hover{
+    font-weight: 700;
+    cursor:pointer;
+}
+#winner{
+    margin:20px auto;
+    color:mediumblue;
+    font:20px;
+}
+#restart{
+    margin:20px auto;
+    display:none;
+}
+.mystyle{
+    display: block;
+}
+</style>
+
 <!-- Start the Javascript -->
 <script>
-    let userScore = 0;
-    let computerScore = 0;
-    let drawScore = 0;
-    let rounds = 0;
+let userScore = 0;
+let computerScore = 0;
+const user_score=document.getElementById("user_score");
+const comp_score=document.getElementById("comp_score");
+const rock_button = document.getElementById("r");
+const paper_button = document.getElementById("p");
+const scissors_button = document.getElementById("s");
+const result_div = document.getElementById("result");
+const winner_div = document.getElementById("winner");
+const restart_div = document.getElementById("restart");
+const test_div = document.getElementById("test");
 
-function startRound(){
-     userScore = 0;
-     computerScore = 0;
-     drawScore = 0;
-     rounds = 0;
-}
-    // function for random computer Choice//
-     function computerPlay(){
-         const choices = ['rock','paper','scissors'];
+// function for random computer Choice//
+function computerPlay(){
+         const choices = ['ROCK','PAPER','SCISSORS'];
          const randomNumber = Math.floor(Math.random()*3);
          return choices[randomNumber];
     }
     
-    function playRound(playerSelection,computerSelection){
-        // function to fill in the user choice.
-        function usersChoice (){
-         return (prompt(`Rock, Paper or Scissors.`,)).toLowerCase();
-     } 
-        // function if the user didn't fill in the choice.
-        function invalidOption (){
-         return (prompt(`Invalid input. Choose between "Rock", "Paper" or "Scissors"`,)).toLowerCase();
-     } 
-        var playerSelection = usersChoice();
-        var theOptions= /rock|paper|scissors/i;
-        // while will keep looping if the the usersChoice is blank.
-        while(playerSelection==""|null|theOptions){
-            playerSelection = invalidOption();
-        }
-        var computerSelection = computerPlay();
-        // a switch for declaring the winner or the loser each round and add winner's score.
-        switch (playerSelection+computerSelection){
-            case "rockscissors":
-            case "paperrock":
-            case "scissorspaper":
-            let win = `Opponent choose ${computerSelection}.You win!`;
+rock_button.addEventListener("click",function(){
+    game("ROCK");
+})
+paper_button.addEventListener("click",function(){
+    game("PAPER");
+})
+scissors_button.addEventListener("click",function(){
+    game("SCISSORS");
+})
+
+function game(usersChoice){
+    const computerSelection = computerPlay();
+    switch (usersChoice+computerSelection){
+            case "ROCKSCISSORS":
+            case "PAPERROCK":
+            case "SCISSORSPAPER":
             userScore++;
-            console.log(win);
-            console.log(`Your score :${userScore}`);
-            console.log(`Opponent score :${computerScore}`);
-            return win;
+            user_score.innerHTML= userScore;
+            result_div.innerHTML= `Your Choice is ${usersChoice}. Computer Choice is ${computerSelection}. You WIN.`;
             break;
-            case "rockpaper":
-            case "paperscissors":
-            case "scissorsrock":
-            let lose = `You Lose! Opponent choose ${computerSelection}.`;
+            case "ROCKPAPER":
+            case "PAPERSCISSORS":
+            case "SCISSORSROCK":
             computerScore++;
-            console.log(lose);
-            console.log(`Your score :${userScore}`);
-            console.log(`Opponent score :${computerScore}`);
-            return lose;
+            comp_score.innerHTML=computerScore;
+            result_div.innerHTML= `Your Choice is ${usersChoice}. Computer Choice is ${computerSelection}. You LOSE.`;
             break;
-            case "rockrock":
-            case "paperpaper":
-            case "scissorsscissors":
-            let draw = ` Draw. You both choose the same option.`;
-            drawScore++;
-            console.log(draw);
-            console.log(`Your score :${userScore}`);
-            console.log(`Opponent score :${computerScore}`);
-            console.log(`Draw :${drawScore}`);
-            return draw;
+            case "ROCKROCK":
+            case "PAPERPAPER":
+            case "SCISSORSSCISSORS":
+            result_div.innerHTML= `Your Choice is ${usersChoice}. Computer Choice is ${computerSelection}. IT'S A DRAW.`;
             break;
-        } // end of switch 
-    } // end of playRound function
-
-var again;
-// function for another round 
-function anotherRound(){
-            if(userScore>computerScore+drawScore){
-                console.log(`Congratulation!!! You won the match with a score of ${userScore}.`)
-            again =confirm(`Congratulation!!! You won the match with a score of ${userScore}. Wanna play again?`);
-        } else if (userScore<computerScore){
-                console.log(`Boo! Opponent won the match with a score of ${computerScore}.`)
-            again =confirm(`Boo! Opponent won the match with a score of ${computerScore}. Try your luck again?`);
-        } else if (usersChoice=computerScore){
-                console.log(`It's a tie. Both scored ${userScore}.`)
-            again =confirm(`It's a tie. Both scored ${userScore}. It's time to determine who is the winner. Play again?`);
-                    
+        }
+    if(rock_button.disabled==false){
+        result_div.style.display="block";
     }
-}
-
-// function for the game to play.
-function game (){
-    // for loop played for 5 times
-    for (var rounds=0;rounds<5;rounds++){
+    if(userScore==5){
+        playRound();
+        result_div=0;
+    }if(computerScore==5){
         playRound();
     }
-    // and if the the player choose OK = play again. Then another 5 rounds will be played. 
-    anotherRound();
-        if (again == true){
-            startRound();// clear the current score before starting another 5 rounds
-            game();
-     } else alert ("Thanks for playing");
-    }
-game();//PLAY THE GAME
+}
+//button for restart the round if one of the player has reached 5 point.
+restart_div.addEventListener("click",function(){
+   startRound(); 
+   myFunction();
+})
 
+//funtion for start the round again, enable the button
+function startRound(){
+    userScore=0;
+    computerScore=0;
+    user_score.innerHTML=0;
+    comp_score.innerHTML=0;
+    rock_button.disabled=false;
+    paper_button.disabled=false;
+    scissors_button.disabled=false;
+    restart_div.style.display="none";
+    result_div.style.display="none";
+    winner_div.style.display="none";
+    
+}
+//function for disabled all the button except play again button if one of the player won.
+function stopGame(){
+    rock_button.disabled=true;
+    paper_button.disabled=true;
+    scissors_button.disabled=true;
+    restart_div.style.display="block";
+    winner_div.style.display="block";
+    
+}   
+
+// function for another round 
+function playRound(){
+    if(userScore==5){
+       winner_div.innerHTML="You have reached total 5 point. You WON.";
+    }else if(computerScore==5){
+       winner_div.innerHTML="Computer has reached total 5 point. You LOSE";
+    }
+    stopGame();
+    }
     </script>
